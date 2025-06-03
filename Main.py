@@ -19,5 +19,5 @@ dates = pd.date_range(start='2018-01-01', periods=length, freq='M')
 
 fred = Fred(api_key=api_key)
 print("API KEY:", os.getenv("FRED_API_KEY"))
-data = fred.get_series('HUNSLRTCR03IXOBM')
+data = fred.get_series('CLVMNACSCAB1GQHU')
 print(data.tail())
