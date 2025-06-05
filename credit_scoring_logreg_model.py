@@ -6,25 +6,30 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
-# 1. Synthetic dataset
-data = {
-    'income': [3000, 1500, 5000, 1200, 2500, 7000, 800, 2200, 6000, 900],
-    'loan_amount': [500, 1200, 2000, 800, 1500, 3000, 700, 1100, 2500, 1000],
-    'has_children': [1, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-    'age': [35, 24, 45, 22, 38, 50, 20, 30, 40, 27],
-    'default': [0, 1, 0, 1, 0, 0, 1, 0, 0, 1]
-}
-df = pd.DataFrame(data)
+
+#1. Loading dataset
+df = pd.read_csv("german.data-numeric", delim_whitespace=True, header=None)
+
+# Assign column names based on the documentation:
+#  - Features 0–23 are input variables (some are numeric encodings of categorical attributes)
+#  - Column 24 is the target variable: 1 = good credit risk, 2 = bad credit risk
+df.columns = [
+    "Status", "Duration", "CreditHistory", "Purpose", "Amount",
+    "Savings", "EmploymentDuration", "InstallmentRate", "PersonalStatusSex",
+    "OtherDebtors", "ResidenceDuration", "Property", "Age", "OtherInstallmentPlans",
+    "Housing", "ExistingCredits", "Job", "PeopleLiable", "Telephone", "ForeignWorker",
+    "Unknown1", "Unknown2", "Unknown3", "Unknown4", "Target"
+]
 
 # 2. Features and target
-X = df[['income', 'loan_amount', 'has_children', 'age']]
-y = df['default']
+X = df.drop("Target", axis=1)
+y = df["Target"]
 
 # 3. Split into train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 
 # 4. Train logistic regression model
-model = LogisticRegression()
+model = LogisticRegression(max_iter=5000)
 model.fit(X_train, y_train)
 
 # 5. Predict and evaluate
